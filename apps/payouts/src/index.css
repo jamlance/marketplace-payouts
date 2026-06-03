@@ -1,0 +1,468 @@
+@import "@inkress/apps-core/styles.css";
+
+/* ============================================================
+   Payouts — production-grade UI layer
+   Uses design-system tokens; adds only what the kit lacks.
+   ============================================================ */
+
+/* ── warn pill (kit only has "warning" not "warn") */
+.bv-pill[data-tone="warn"],
+.bv-pill[data-tone="warning"] {
+  color: oklch(0.5 0.13 70);
+  background: oklch(0.96 0.05 80);
+  border-color: oklch(0.85 0.08 80);
+}
+
+/* ── skeleton inside stat tiles */
+.py-skeleton-stat { pointer-events: none; }
+
+/* ── skeleton table: no min-width forcing horizontal scroll */
+.py-skeleton-table { min-width: 0 !important; }
+.py-skeleton-table td { padding: 10px 12px; }
+
+/* ====================================================== hero stat emphasis */
+/* First balance stat gets a heavier feel */
+.bv-stats .bv-stat:first-child.is-accent {
+  background: var(--accent-wash);
+  border-color: color-mix(in oklch, var(--accent) 25%, transparent);
+}
+
+/* ====================================================== info strip */
+.py-info-strip {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: var(--panel);
+  border-radius: var(--r-sm);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.py-info-badge {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  background: var(--accent-wash);
+  color: var(--accent);
+  border: 1px solid color-mix(in oklch, var(--accent) 25%, transparent);
+}
+
+/* ====================================================== table enhancements */
+/* Right-align amount with tabular nums */
+.py-amount {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.py-fee {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+}
+
+/* Clickable row hint */
+.bv-table tbody tr[style*="cursor: pointer"]:hover .py-amount {
+  color: var(--accent);
+}
+
+/* ====================================================== error block */
+.py-error-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  background: var(--bad-wash);
+  border: 1px solid color-mix(in oklch, var(--bad) 25%, transparent);
+  border-radius: var(--r);
+  flex-wrap: wrap;
+}
+.py-error-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.py-error-title {
+  font-weight: 600;
+  color: var(--bad);
+  margin-bottom: 2px;
+}
+.py-error-sub {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+/* ====================================================== payout detail modal */
+.py-detail-body { display: flex; flex-direction: column; gap: 16px; }
+
+/* loading skeleton inside modal */
+.py-detail-skeleton { display: flex; flex-direction: column; gap: 10px; }
+.py-detail-skel-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+/* status + speed hero */
+.py-detail-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.py-speed-badge { display: inline-flex; }
+
+/* risk meter */
+.py-risk-meter {
+  padding: 10px 14px;
+  background: var(--panel);
+  border-radius: var(--r-sm);
+}
+.py-risk-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--ink-soft);
+}
+.py-risk-val { font-weight: 700; }
+.py-risk-val.is-ok  { color: var(--ok); }
+.py-risk-val.is-warn { color: oklch(0.55 0.13 70); }
+.py-risk-val.is-bad  { color: var(--bad); }
+.py-risk-track {
+  height: 6px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.py-risk-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s var(--ease);
+  background: var(--ink-faint);
+}
+.py-risk-fill.is-ok   { background: var(--ok); }
+.py-risk-fill.is-warn { background: var(--warn); }
+.py-risk-fill.is-bad  { background: var(--bad); }
+
+/* reasons list (shared: modal + verdict) */
+.py-reasons-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+.py-reasons-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.45;
+}
+.py-reason-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+/* detail dl */
+.py-detail-dl {
+  display: grid;
+  row-gap: 0;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+.py-detail-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.py-detail-row:last-child { border-bottom: 0; }
+.py-detail-row dt {
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.py-detail-row dd {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-align: right;
+  word-break: break-all;
+}
+.py-amount-lg {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* review note */
+.py-review-note {
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ====================================================== forms */
+.py-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+.py-field:last-of-type { margin-bottom: 0; }
+.py-hint {
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  line-height: 1.4;
+}
+
+/* currency-prefixed amount input */
+.py-amount-wrap {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: stretch;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  transition: border-color 0.12s var(--ease), box-shadow 0.12s var(--ease);
+}
+.py-amount-wrap:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 18%, transparent);
+}
+.py-currency-prefix {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  background: var(--panel);
+  border-right: 1px solid var(--line-strong);
+  white-space: nowrap;
+  user-select: none;
+}
+.py-amount-wrap input {
+  border: none;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none !important;
+}
+.py-amount-wrap input:focus { outline: none; box-shadow: none; }
+
+/* available badge */
+.py-avail-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 20px;
+  margin-top: -8px;
+  margin-bottom: 12px;
+  font-size: 0.78rem;
+}
+.py-avail-label {
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.py-avail-amount {
+  font-weight: 700;
+  color: var(--ok);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ====================================================== fee callout */
+.py-fee-callout {
+  background: var(--panel);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+  min-height: 0;
+}
+.py-fee-callout:empty { display: none; }
+.py-fee-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8125rem;
+  gap: 8px;
+}
+.py-fee-free {
+  color: var(--ok);
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+.py-fee-cost {
+  color: var(--bad);
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+.py-fee-note {
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  margin: 0;
+}
+
+/* ====================================================== action buttons */
+.py-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  margin-top: 4px;
+}
+.py-actions button { min-height: 40px; }
+
+/* Quick payout button — secondary with accent border */
+.py-quick-btn {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--r-sm);
+  border: 1.5px solid var(--accent);
+  background: var(--accent-wash);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: background 0.15s var(--ease), box-shadow 0.15s var(--ease), transform 0.06s var(--ease);
+}
+.py-quick-btn:hover:not(:disabled) {
+  background: color-mix(in oklch, var(--accent-wash) 60%, var(--accent) 10%);
+  box-shadow: var(--e1);
+}
+.py-quick-btn:active:not(:disabled) { transform: translateY(1px); }
+.py-quick-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 24%, transparent);
+}
+.py-quick-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ====================================================== verdict */
+.py-verdict { margin-top: 4px; }
+.py-verdict-ok,
+.py-verdict-no {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: var(--r-sm);
+  animation: bv-rise 0.18s var(--ease);
+}
+.py-verdict-ok {
+  background: var(--ok-wash);
+  border: 1px solid color-mix(in oklch, var(--ok) 30%, transparent);
+}
+.py-verdict-no {
+  background: var(--bad-wash);
+  border: 1px solid color-mix(in oklch, var(--bad) 25%, transparent);
+}
+.py-verdict-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  flex-wrap: wrap;
+}
+.py-verdict-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+  display: inline-block;
+}
+
+/* ====================================================== spinner */
+@keyframes py-spin { to { transform: rotate(360deg); } }
+.py-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: py-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ====================================================== fatal screen */
+.py-fatal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 48px 24px;
+  margin: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--e1);
+}
+.py-fatal-icon {
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+/* ====================================================== responsive */
+/* Stack detail grid at narrow viewports */
+@media (max-width: 420px) {
+  .py-detail-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .py-detail-row dd { text-align: left; }
+
+  .py-actions { flex-direction: column; }
+  .py-actions button,
+  .py-quick-btn { width: 100%; }
+
+  /* Ensure tap targets ≥40px */
+  .py-quick-btn,
+  .py-actions button { min-height: 44px; }
+
+  .bv-tab { padding: 8px 10px; font-size: 0.75rem; }
+
+  .py-fee-row { flex-direction: column; align-items: flex-start; gap: 2px; }
+
+  .py-error-block { flex-direction: column; }
+
+  .py-info-strip { flex-direction: column; gap: 6px; }
+}
